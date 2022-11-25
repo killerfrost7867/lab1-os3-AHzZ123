@@ -63,9 +63,19 @@ pub fn sys_get_time(ts: *mut TimeVal, _tz: usize) -> isize {
 
 /// YOUR JOB: Finish sys_task_info to pass testcases
 pub fn sys_task_info(ti: *mut TaskInfo) -> isize {
+    let task = get_task_info();
+    struct Tmp {
+        status: TaskStatus,
+        syscall_times: [u32; MAX_SYSCALL_NUM],
+        time: usize,
+    }
     unsafe {
-        (*ti) = get_task_info();
-        (*ti).time = (get_time_us() - (*ti).time) / 1000;
+        let tmp = ti as * mut Tmp;
+        (*tmp).status = task.status;
+        for i in 0..task.syscall_times.len() {
+            (*tmp).syscall_times[i] = task.syscall_times[i];
+        }
+        (*tmp).time = (get_time_us() - task.time) / 1000;
     }
     0
 }
