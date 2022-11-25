@@ -117,7 +117,7 @@ const MAX_SYSCALL_NUM: usize = 500;
 #[derive(Debug)]
 pub struct TaskInfo {
     pub status: TaskStatus,
-    pub syscall_times: [u32; MAX_SYSCALL_NUM],
+    pub syscall_times: Vec<u32>,
     pub time: usize,
 }
 
@@ -125,7 +125,7 @@ impl TaskInfo {
     pub fn new() -> Self {
         TaskInfo {
             status: TaskStatus::UnInit,
-            syscall_times: [0; MAX_SYSCALL_NUM],
+            syscall_times: Vec::new(),
             time: 0,
         }
     }
